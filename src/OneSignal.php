@@ -14,7 +14,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class OneSignal
 {
-    const API_URL = 'https://onesignal.com/api/v1';
+    private $apiUrl = 'https://onesignal.com/api/v1';
 
     /**
      * @var Config
@@ -105,7 +105,7 @@ class OneSignal
     public function request($method, $uri, array $headers = [], $body = null)
     {
         try {
-            $response = $this->client->send($method, self::API_URL.$uri, array_merge([
+            $response = $this->client->send($method, $this->getApiUrl().$uri, array_merge([
                 'Content-Type' => 'application/json',
             ], $headers), $body);
 
@@ -144,4 +144,21 @@ class OneSignal
 
         throw new OneSignalException(sprintf('Undefined property via __get(): %s in %s on line %u', $name, $trace[0]['file'], $trace[0]['line']));
     }
+
+    /**
+     * @return string
+     */
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
+    }
+
+    /**
+     * @param string $apiUrl
+     */
+    public function setApiUrl(string $apiUrl)
+    {
+        $this->apiUrl = $apiUrl;
+    }
+
 }
